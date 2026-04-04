@@ -11,5 +11,6 @@ namespace Sepideh1.Data
         }
 
         public DbSet<Student> Students { get; set; } = default!;
+        public DbSet<Lesson> Lessons { get; set; } = default!;
     }
 }

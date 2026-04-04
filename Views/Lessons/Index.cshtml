@@ -1,0 +1,43 @@
+@model IEnumerable<Sepideh1.Models.Lesson>
+
+@{
+    ViewData["Title"] = "Lessons";
+}
+
+<h1>Lessons</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Capacity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var lesson in Model)
+{
+        <tr>
+            <td>@lesson.Id</td>
+            <td>@lesson.Title</td>
+            <td>@lesson.Description</td>
+            <td>@lesson.StartDate.ToString("yyyy-MM-dd")</td>
+            <td>@lesson.EndDate.ToString("yyyy-MM-dd")</td>
+            <td>@lesson.Capacity</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@lesson.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@lesson.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@lesson.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
