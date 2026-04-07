@@ -1,0 +1,40 @@
+@model IEnumerable<Sepideh1.Models.Room>
+
+@{
+    ViewData["Title"] = "Rooms";
+}
+
+<h1>Rooms</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Capacity</th>
+            <th>Available</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var room in Model)
+{
+        <tr>
+            <td>@room.Id</td>
+            <td>@room.Name</td>
+            <td>@room.Capacity</td>
+            <td>@(room.IsAvailable ? "Yes" : "No")</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@room.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@room.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@room.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
