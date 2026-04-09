@@ -1,0 +1,43 @@
+@model IEnumerable<Sepideh1.Models.Book>
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h1>Books</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Published date</th>
+            <th>Pages</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var book in Model)
+{
+        <tr>
+            <td>@book.Id</td>
+            <td>@book.Title</td>
+            <td>@book.Author</td>
+            <td>@book.ISBN</td>
+            <td>@(book.PublishedDate.HasValue ? book.PublishedDate.Value.ToString("yyyy-MM-dd") : string.Empty)</td>
+            <td>@book.Pages</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@book.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@book.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@book.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
