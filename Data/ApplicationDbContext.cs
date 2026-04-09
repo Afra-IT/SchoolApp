@@ -14,5 +14,6 @@ namespace Sepideh1.Data
         public DbSet<Lesson> Lessons { get; set; } = default!;
         public DbSet<Teacher> Teachers { get; set; } = default!;
         public DbSet<Room> Rooms { get; set; } = default!;
+        public DbSet<Book> Books { get; set; } = default!;
     }
 }
