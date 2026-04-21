@@ -1,4 +1,7 @@
+@using Microsoft.EntityFrameworkCore
+@using Sepideh1.Models
 @model Sepideh1.Models.Student
+@inject Sepideh1.Data.ApplicationDbContext Db
 
 @{
     ViewData["Title"] = "Student details";
@@ -30,3 +33,61 @@
     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
     <a asp-action="Index" class="btn btn-secondary">Back to list</a>
 </p>
+
+<h4>Available Lessons</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Capacity</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var lessons = Db.Lessons
+            .AsNoTracking()
+            .OrderBy(l => l.StartDate)
+            .ToList();
+
+            foreach (var lesson in lessons)
+            {
+                var enrolledCount = Db.Enrollments.Count(e => e.LessonId == lesson.Id);
+                var isEnrolled = Db.Enrollments.Any(e => e.LessonId == lesson.Id && e.StudentId == Model.Id);
+            }
+        }
+        @foreach (var lesson in lessons)
+        {
+            var enrolledCount = Db.Enrollments.Count(e => e.LessonId == lesson.Id);
+            var isEnrolled = Db.Enrollments.Any(e => e.LessonId == lesson.Id && e.StudentId == Model.Id);
+            <tr>
+                <td>@lesson.Title</td>
+                <td>@lesson.StartDate.ToShortDateString()</td>
+                <td>@lesson.EndDate.ToShortDateString()</td>
+                <td>@enrolledCount/@lesson.Capacity</td>
+                <td>
+                    @if (isEnrolled)
+                    {
+                        <form asp-controller="Enrollments" asp-action="Unregister" method="post" style="display:inline">
+                            <input type="hidden" name="studentId" value="@Model.Id" />
+                            <input type="hidden" name="lessonId" value="@lesson.Id" />
+                            <button class="btn btn-sm btn-danger" type="submit">Unregister</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Enrollments" asp-action="Register" method="post" style="display:inline">
+                            <input type="hidden" name="studentId" value="@Model.Id" />
+                            <input type="hidden" name="lessonId" value="@lesson.Id" />
+                            <button class="btn btn-sm btn-primary" type="submit" @(enrolledCount >= lesson.Capacity ? "disabled" : "")>
+                                Register
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
