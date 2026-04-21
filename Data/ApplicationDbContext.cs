@@ -15,5 +15,16 @@ namespace Sepideh1.Data
         public DbSet<Teacher> Teachers { get; set; } = default!;
         public DbSet<Room> Rooms { get; set; } = default!;
         public DbSet<Book> Books { get; set; } = default!;
+        public DbSet<Enrollment> Enrollments { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Prevent duplicate student registrations for same lesson
+            modelBuilder.Entity<Enrollment>()
+                .HasIndex(e => new { e.StudentId, e.LessonId })
+                .IsUnique();
+        }
     }
 }
